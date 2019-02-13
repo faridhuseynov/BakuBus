@@ -13,8 +13,9 @@
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <ComboBox Grid.Row="0" Margin="10"
-                  ></ComboBox>
-        <m:Map Grid.Row="1" Margin="10" Mode="AerialWithLabels"
+                  ItemsSource="{Binding BusList}"
+                  SelectedIndex="{Binding SelectedBusIndex}"></ComboBox>
+        <!--<m:Map Grid.Row="1" Margin="10" Mode="AerialWithLabels"
                CredentialsProvider="Apvz3tb29nyul3gC1yacpKfH_QNpJ9pcbCOOLSQNIWL5BDPHPofetaoBQG2KK9_h">
             <m:MapItemsControl ItemsSource="{Binding Buses}">
                 <m:MapItemsControl.ItemTemplate>
@@ -23,6 +24,6 @@
                     </DataTemplate>
                 </m:MapItemsControl.ItemTemplate>
             </m:MapItemsControl>
-        </m:Map>
+        </m:Map>-->
     </Grid>
 </Window>

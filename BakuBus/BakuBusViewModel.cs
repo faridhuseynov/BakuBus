@@ -13,6 +13,10 @@ namespace BakuBus
 {
     public class BakuBusViewModel : ViewModelBase
     {
+        private int selectedBusIndex=0;
+        public int SelectedBusIndex { get => selectedBusIndex; set => Set(ref selectedBusIndex, value); }
+
+        //Bus List for the combo box
         private ObservableCollection<string> busList;
         public ObservableCollection<string> BusList { get => busList; set => Set(ref busList, value); }
 
@@ -39,15 +43,18 @@ namespace BakuBus
                 NewBus.Coordinates.Longitude = double.Parse(item["@atttibutes"]["LONGITUDE"].ToString());
 
                 Buses.Add(NewBus);
-                if (!BusList.Contains(NewBus.Name))
+                if (!BusList.Contains(NewBus.Name) && NewBus.Name!="H1")
                     BusList.Add(NewBus.Name);                
             }
         }
         public BakuBusViewModel()
         {
             Buses = new ObservableCollection<Bus>();
-            BusesList = new ObservableCollection<string>();
-            GetBusListAsync();
+            BusList = new ObservableCollection<string>();
+            BusList.Add("Choose...");
+            BusList.Add("Airport Express");
+            SelectedBusIndex = 0;
+            //GetBusListAsync();
         }
     }
 }

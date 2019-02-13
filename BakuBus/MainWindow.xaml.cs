@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,7 @@ namespace BakuBus
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new BakuBusViewModel(); 
         }
     }
 }

@@ -23,7 +23,7 @@
                 <m:MapItemsControl.ItemTemplate>
                     <DataTemplate>
                         <m:Pushpin Location="{Binding Coordinates,UpdateSourceTrigger=PropertyChanged}"
-                                   Content="{Binding Name}"/>
+                                  Content="{Binding Name}" />
                     </DataTemplate>
                 </m:MapItemsControl.ItemTemplate>
             </m:MapItemsControl>

@@ -7,7 +7,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace BakuBus
 {
@@ -22,9 +24,9 @@ namespace BakuBus
 
         private ObservableCollection<Bus> buses;
         public ObservableCollection<Bus> Buses { get => buses; set => Set(ref buses, value); }
+        //private ObservableCollection<Bus> buses2;
+        //public ObservableCollection<Bus> Buses2 { get => buses2; set => Set(ref buses2, value); }
 
-        private ObservableCollection<Bus> busesForMap;
-        public ObservableCollection<Bus> BusesForMap { get => busesForMap; set => Set(ref busesForMap, value); }
 
         public HttpClient httpClient { get; set; } = new HttpClient();
         public string apiUri = @"https://www.bakubus.az/az/ajax/apiNew1";
@@ -51,8 +53,12 @@ namespace BakuBus
 
                     //bus longitude
                     NewBus.Coordinates.Longitude = double.Parse(item["@attributes"]["LONGITUDE"].ToString());
+
+                    Application.Current.Dispatcher.Invoke((System.Action)delegate
+                    {
+                        Buses.Add(NewBus);
+                    });
                     
-                    Buses.Add(NewBus);
                     if (!BusList.Contains(NewBus.Name) && NewBus.Name != "H1")
                         BusList.Add(NewBus.Name);
                 }
@@ -65,8 +71,15 @@ namespace BakuBus
             BusList.Add("Choose...");
             BusList.Add("Airport Express");
             SelectedBusIndex = 0;
+            //Timer timer = new Timer(param=> { GetBusListAsync(); }, null, 0, 2);
+
             GetBusListAsync();
-            BusesForMap = new ObservableCollection<Bus>(Buses);
+            //int a = 0;
+            //while (a<2)
+            //{
+            //    Timer timer = new Timer(param => { SelectedBusIndex++; }, null, 0, 1);
+            //    a++;
+            //}
         }
     }
 }

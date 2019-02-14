@@ -23,6 +23,9 @@ namespace BakuBus
         private ObservableCollection<Bus> buses;
         public ObservableCollection<Bus> Buses { get => buses; set => Set(ref buses, value); }
 
+        private ObservableCollection<Bus> busesForMap;
+        public ObservableCollection<Bus> BusesForMap { get => busesForMap; set => Set(ref busesForMap, value); }
+
         public HttpClient httpClient { get; set; } = new HttpClient();
         public string apiUri = @"https://www.bakubus.az/az/ajax/apiNew1";
 
@@ -63,6 +66,7 @@ namespace BakuBus
             BusList.Add("Airport Express");
             SelectedBusIndex = 0;
             GetBusListAsync();
+            BusesForMap = new ObservableCollection<Bus>(Buses);
         }
     }
 }

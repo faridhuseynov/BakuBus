@@ -22,7 +22,8 @@
             <m:MapItemsControl ItemsSource="{Binding Buses}">
                 <m:MapItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <m:Pushpin Location="{Binding Coordinates}"/>
+                        <m:Pushpin Location="{Binding Coordinates,UpdateSourceTrigger=PropertyChanged}"
+                                   Content="{Binding Name}"/>
                     </DataTemplate>
                 </m:MapItemsControl.ItemTemplate>
             </m:MapItemsControl>

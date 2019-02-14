@@ -32,19 +32,27 @@ namespace BakuBus
             var result =   JsonConvert.DeserializeObject(json) as JObject;
             foreach (var item in result["BUS"])
             {
-                Bus NewBus = new Bus();
-                //bus number
-                NewBus.Name = item["@atttibutes"]["DISPLAY_ROUTE_CODE"].ToString();
+                //check if it is not the test bus. some of the buses are just for test, no need to add them
+                var check = item["@attributes"]["DISPLAY_ROUTE_CODE"].ToString();
 
-                //bus lattitude
-                NewBus.Coordinates.Latitude = double.Parse(item["@atttibutes"]["LATITUDE"].ToString());
+                if (check != "T")
+                {
+                    Bus NewBus = new Bus();
+                    //bus number
+                    NewBus.Name = check;
 
-                //bus longitude
-                NewBus.Coordinates.Longitude = double.Parse(item["@atttibutes"]["LONGITUDE"].ToString());
+                    NewBus.Coordinates = new Microsoft.Maps.MapControl.WPF.Location();
 
-                Buses.Add(NewBus);
-                if (!BusList.Contains(NewBus.Name) && NewBus.Name!="H1")
-                    BusList.Add(NewBus.Name);                
+                    //bus lattitude
+                    NewBus.Coordinates.Latitude = double.Parse(item["@attributes"]["LATITUDE"].ToString());
+
+                    //bus longitude
+                    NewBus.Coordinates.Longitude = double.Parse(item["@attributes"]["LONGITUDE"].ToString());
+                    
+                    Buses.Add(NewBus);
+                    if (!BusList.Contains(NewBus.Name) && NewBus.Name != "H1")
+                        BusList.Add(NewBus.Name);
+                }
             }
         }
         public BakuBusViewModel()
@@ -54,7 +62,7 @@ namespace BakuBus
             BusList.Add("Choose...");
             BusList.Add("Airport Express");
             SelectedBusIndex = 0;
-            //GetBusListAsync();
+            GetBusListAsync();
         }
     }
 }

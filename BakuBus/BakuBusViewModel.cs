@@ -93,7 +93,14 @@ namespace BakuBus
         //                    () =>
         //                    {
         //                        var bus = BusList[SelectedBusIndex];
-        //                        MapBusList = new ObservableCollection<Bus>(Buses.Where(x => x.Name == bus));
+        //                        if (bus == "Airport Express")
+        //                            bus = "H1";
+        //                        else if (bus== "Choose...")
+        //                        {
+        //                            MapBusList = new ObservableCollection<Bus>(Buses);
+        //                        }
+        //                        else
+        //                            MapBusList = new ObservableCollection<Bus>(Buses.Where(x => x.Name == bus));
         //                    }
         //                ));
         //}

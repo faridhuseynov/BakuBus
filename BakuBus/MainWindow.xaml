@@ -7,6 +7,7 @@
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+        <!--xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"-->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"></RowDefinition>
@@ -14,12 +15,17 @@
         </Grid.RowDefinitions>
         <ComboBox Grid.Row="0" Margin="10"
                   ItemsSource="{Binding BusList}"
-                  SelectedIndex="{Binding SelectedBusIndex}"></ComboBox>
+                  SelectedIndex="{Binding SelectedBusIndex,UpdateSourceTrigger=PropertyChanged}"
+                  >
+            <!--<i:EventTrigger EventName="SelectionChanged">
+                <i:InvokeCommandAction Command="{Binding BusSelectedCommand}"/>
+            </i:EventTrigger>-->
+        </ComboBox>
         <m:Map Grid.Row="1" Margin="10" Mode="AerialWithLabels"
                CredentialsProvider="Apvz3tb29nyul3gC1yacpKfH_QNpJ9pcbCOOLSQNIWL5BDPHPofetaoBQG2KK9_h"
                Center="40.409264, 49.867092"
                ZoomLevel="11.8">
-            <m:MapItemsControl ItemsSource="{Binding Buses}">
+            <m:MapItemsControl ItemsSource="{Binding MapBusList}">
                 <m:MapItemsControl.ItemTemplate>
                     <DataTemplate>
                         <m:Pushpin Location="{Binding Coordinates,UpdateSourceTrigger=PropertyChanged}"

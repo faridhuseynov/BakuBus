@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -24,14 +25,15 @@ namespace BakuBus
 
         private ObservableCollection<Bus> buses;
         public ObservableCollection<Bus> Buses { get => buses; set => Set(ref buses, value); }
-        //private ObservableCollection<Bus> buses2;
-        //public ObservableCollection<Bus> Buses2 { get => buses2; set => Set(ref buses2, value); }
+
+        private ObservableCollection<Bus> mapBusList;
+        public ObservableCollection<Bus> MapBusList { get => mapBusList; set => Set(ref mapBusList, value); }
 
 
         public HttpClient httpClient { get; set; } = new HttpClient();
         public string apiUri = @"https://www.bakubus.az/az/ajax/apiNew1";
 
-        async void GetBusListAsync()
+        async void GetBusListAsync(object sender)
         {
             var json = await httpClient.GetStringAsync(apiUri);
             var result =   JsonConvert.DeserializeObject(json) as JObject;
@@ -59,8 +61,13 @@ namespace BakuBus
                     //    Buses.Add(NewBus);
                     //});
                     Buses.Add(NewBus);
-                    if (!BusList.Contains(NewBus.Name) && NewBus.Name != "H1")
-                        BusList.Add(NewBus.Name);
+
+                    Application.Current.Dispatcher.Invoke((System.Action)delegate
+                    {
+                        if (!BusList.Contains(NewBus.Name) && NewBus.Name != "H1")
+                            BusList.Add(NewBus.Name);
+                    });
+                  
                 }
             }
            BusList=new ObservableCollection<string>(BusList.OrderByDescending(x=>x));
@@ -74,13 +81,21 @@ namespace BakuBus
             SelectedBusIndex = 0;
             //Timer timer = new Timer(param=> { GetBusListAsync(); }, null, 0, 2);
 
-            GetBusListAsync();
-            //int a = 0;
-            //while (a<2)
-            //{
-            //    Timer timer = new Timer(param => { SelectedBusIndex++; }, null, 0, 1);
-            //    a++;
-            //}
+            GetBusListAsync(new object());
+            MapBusList = new ObservableCollection<Bus>(Buses);
+            Timer timer = new Timer(GetBusListAsync, null, 0,5000);      
         }
+
+        //private RelayCommand busSelectedCommand;
+        //public RelayCommand BusSelectedCommand
+        //{
+        //    get => busSelectedCommand ?? (busSelectedCommand = new RelayCommand(
+        //                    () =>
+        //                    {
+        //                        var bus = BusList[SelectedBusIndex];
+        //                        MapBusList = new ObservableCollection<Bus>(Buses.Where(x => x.Name == bus));
+        //                    }
+        //                ));
+        //}
     }
 }

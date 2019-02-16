@@ -83,7 +83,7 @@ namespace BakuBus
 
             GetBusListAsync(new object());
             MapBuses = new ObservableCollection<Bus>(Buses);
-            //Timer timer = new Timer(GetBusListAsync, null, 0, 5000);
+            Timer timer = new Timer(param=>GetBusListAsync(new object()), null, 0, 5000);
         }
 
         private RelayCommand busSearchCommand;

@@ -40,7 +40,7 @@ namespace BakuBus
                 //check if it is not the test bus. some of the buses are just for test, no need to add them
                 var check = item["@attributes"]["DISPLAY_ROUTE_CODE"].ToString();
 
-                if (check != "T")
+                if (check != "T" && check != "0")
                 {
                     Bus NewBus = new Bus();
                     //bus number
@@ -54,15 +54,16 @@ namespace BakuBus
                     //bus longitude
                     NewBus.Coordinates.Longitude = double.Parse(item["@attributes"]["LONGITUDE"].ToString());
 
-                    Application.Current.Dispatcher.Invoke((System.Action)delegate
-                    {
-                        Buses.Add(NewBus);
-                    });
-                    
+                    //Application.Current.Dispatcher.Invoke((System.Action)delegate
+                    //{
+                    //    Buses.Add(NewBus);
+                    //});
+                    Buses.Add(NewBus);
                     if (!BusList.Contains(NewBus.Name) && NewBus.Name != "H1")
                         BusList.Add(NewBus.Name);
                 }
             }
+           BusList=new ObservableCollection<string>(BusList.OrderByDescending(x=>x));
         }
         public BakuBusViewModel()
         {

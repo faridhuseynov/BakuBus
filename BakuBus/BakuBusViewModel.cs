@@ -16,7 +16,7 @@ namespace BakuBus
 {
     public class BakuBusViewModel : ViewModelBase
     {
-        private int selectedBusIndex=0;
+        private int selectedBusIndex;
         public int SelectedBusIndex { get => selectedBusIndex; set => Set(ref selectedBusIndex, value); }
 
         //Bus List for the combo box
@@ -26,8 +26,8 @@ namespace BakuBus
         private ObservableCollection<Bus> buses;
         public ObservableCollection<Bus> Buses { get => buses; set => Set(ref buses, value); }
 
-        private ObservableCollection<Bus> mapBusList;
-        public ObservableCollection<Bus> MapBusList { get => mapBusList; set => Set(ref mapBusList, value); }
+        private ObservableCollection<Bus> mapBuses;
+        public ObservableCollection<Bus> MapBuses { get => mapBuses; set => Set(ref mapBuses, value); }
 
 
         public HttpClient httpClient { get; set; } = new HttpClient();
@@ -82,27 +82,29 @@ namespace BakuBus
             //Timer timer = new Timer(param=> { GetBusListAsync(); }, null, 0, 2);
 
             GetBusListAsync(new object());
-            MapBusList = new ObservableCollection<Bus>(Buses);
-            Timer timer = new Timer(GetBusListAsync, null, 0,5000);      
+            MapBuses = new ObservableCollection<Bus>(Buses);
+            //Timer timer = new Timer(GetBusListAsync, null, 0, 5000);
         }
 
-        //private RelayCommand busSelectedCommand;
-        //public RelayCommand BusSelectedCommand
-        //{
-        //    get => busSelectedCommand ?? (busSelectedCommand = new RelayCommand(
-        //                    () =>
-        //                    {
-        //                        var bus = BusList[SelectedBusIndex];
-        //                        if (bus == "Airport Express")
-        //                            bus = "H1";
-        //                        else if (bus== "Choose...")
-        //                        {
-        //                            MapBusList = new ObservableCollection<Bus>(Buses);
-        //                        }
-        //                        else
-        //                            MapBusList = new ObservableCollection<Bus>(Buses.Where(x => x.Name == bus));
-        //                    }
-        //                ));
-        //}
+        private RelayCommand busSearchCommand;
+        public RelayCommand BusSearchCommand
+        {
+            get => busSearchCommand ?? (busSearchCommand = new RelayCommand(
+                            () =>
+                            {
+                                var bus = BusList[SelectedBusIndex];                                
+                                if (bus == "Choose...")
+                                {
+                                    MapBuses = new ObservableCollection<Bus>(Buses);
+                                }
+                                else
+                                {
+                                    if (bus == "Airport Express")
+                                        bus = "H1";
+                                    MapBuses = new ObservableCollection<Bus>(Buses.Where(x => x.Name == bus));
+                                }
+                            }
+                        ));
+        }
     }
 }
